@@ -21,3 +21,13 @@ Despues para que el usuario se pueda conectar hay que asignarle ciertos permisos
 - Para obetner el default tablespace: `SELECT default_tablespace FROM dba_users WHERE username = 'sebas';`
 - `ALTER USER sebas QUOTA UNLIMITED ON USERS;`
 - Para tener permisos de _crear vies_, _crear procedures_, _crear sequencias_: `GRANT create view, create procedure, create sequence TO sebas;`
+
+## Como correr el proyecto
+
+Bajo el directorio principal de la aplicacion realizar los siguientes pasos:
+
+- `cd Proyecto_Final_Oracle_DB/`
+- `cd oracle_db/`
+- `./mvnw spring-boot:run`
+
+_Si la aplicacion falla al iniciar se mostrara el error en consola. Posiblemente sea en la configuracion del script de la base de datos_
