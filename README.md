@@ -31,3 +31,14 @@ Bajo el directorio principal de la aplicacion realizar los siguientes pasos:
 - `./mvnw spring-boot:run`
 
 _Si la aplicacion falla al iniciar se mostrara el error en consola. Posiblemente sea en la configuracion del script de la base de datos_
+
+## Como hacer consultas a la base de datos
+
+Se pueden realizar los siguientes llamados a los distintos endpoints:
+
+- `curl --location --request GET "localhost:8181/clientes/search" -H "Content-type: application/json" -d "jason@example.com"`
+  - Busca a un cliente por su correo, en este caso "jason@example.com".
+- `curl --location --request POST "localhost:8181/clientes/add" -H "Content-type: application/json" -d "{\"nombre\" : \"Jason\", \"apellido\" : \"Todd\", \"meses_activos\" : 35, \"correo\" : \"jason@example.com\"}"`
+  - Agrega a un nuevo cliente al pasarle los parametros de "nombre", "apellido", "meses_activos" y "correo".
+- `curl --location --request GET "localhost:8181/clientes/allClientes"`
+  - Devuelve una lista con todos los clientes de la base de datos.
