@@ -65,7 +65,13 @@ ALTER TABLE Staff ADD CONSTRAINT Staff_fk0 FOREIGN KEY (Salario) REFERENCES Sala
 ALTER TABLE Salarios ADD CONSTRAINT Salarios_fk0 FOREIGN KEY (Cuenta_IBAN) REFERENCES Cuentas_IBAN(idCuenta);
 ALTER TABLE Cuentas_IBAN ADD CONSTRAINT Cuentas_IBAN_fk0 FOREIGN KEY (Staff) REFERENCES Staff(idStaff);
 
-CREATE sequence CLIENTES_IDCLIENTE_SEQ;
+CREATE sequence CLIENTES_IDCLIENTE_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
 CREATE sequence MATRICULA_IDMATRICULA_SEQ;
 
@@ -156,3 +162,22 @@ END;
 begin
     find_client('sebas@example.com1');
 end;
+/
+
+-- Procedure add_client ----------------------------------------------------
+create or replace procedure addClient(
+	v_nombre in Clientes.Nombre%type, 
+	v_apellido in Clientes.APELLIDO%type, 
+	v_meses_activos in Clientes.MESES_ACTIVOS%type,
+	v_correo in Clientes.CORREO%type)
+is
+--variables
+BEGIN
+	INSERT INTO Clientes (Nombre, Apellido, Meses_Activos, Correo)  VALUES (v_nombre, v_apellido, v_meses_activos, v_correo);
+	COMMIT;
+END;
+/
+
+BEGIN
+   addClient('Jason','Todd', 35,'jason@example.com');
+END;
