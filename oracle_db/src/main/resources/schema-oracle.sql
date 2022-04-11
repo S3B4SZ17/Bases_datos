@@ -142,13 +142,13 @@ end;
 -- Stored PROCEDURES
 -- Procedure find_client that will search for a client based on the email address
 -- Take into account that we should have the name of the in variable different than any column name
-create or replace procedure find_client(v_correo in varchar2)
+create or replace procedure find_client(v_correo in Clientes.Correo%type, o_client out SYS_REFCURSOR)
 as
 --variables
-    resultado Clientes%rowtype;
 BEGIN
-    SELECT * INTO resultado from Clientes WHERE CORREO = v_correo;
-    dbms_output.put_line(resultado.NOMBRE||' '||resultado.APELLIDO||' lleva '||resultado.MESES_ACTIVOS||' meses activo.');
+	OPEN o_client FOR
+    SELECT * FROM Clientes WHERE CORREO = v_correo;
+    -- dbms_output.put_line(resultado.NOMBRE||' '||resultado.APELLIDO||' lleva '||resultado.MESES_ACTIVOS||' meses activo.');
 EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
     dbms_output.put_line( 'No se encontraron datos con el correo '||v_correo);
 END;

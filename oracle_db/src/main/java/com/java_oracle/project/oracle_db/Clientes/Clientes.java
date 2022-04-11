@@ -10,6 +10,7 @@ public class Clientes {
 
     private int idcliente;
     private String apellido;
-    private String NOMBRE;
-    private int meses_ACTIVOS;
+    private String nombre;
+    private int meses_activos;
+    private String correo;
 }

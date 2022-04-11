@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,9 +33,19 @@ public class Clientes_controller {
 
     @GetMapping("/{nombre}")
     public ResponseEntity<Clientes> getClienteNombre(
-        @PathVariable(value = "nombre") String nombre){
+            @PathVariable(value = "nombre") String nombre) {
         Clientes cliente = clientes_service.findClienteByNombre(nombre);
         return new ResponseEntity<>(cliente, HttpStatus.OK);
+        //with the responseEntity class we are sending a response of OK to the client
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<Clientes>> getClienteEmail(@RequestBody String email) {
+        List<Clientes> listClientes = clientes_service.findClienteByEmail(email);
+        if (listClientes == null) {
+            return new ResponseEntity<>(listClientes, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(listClientes, HttpStatus.OK);
         //with the responseEntity class we are sending a response of OK to the client
     }
 }
