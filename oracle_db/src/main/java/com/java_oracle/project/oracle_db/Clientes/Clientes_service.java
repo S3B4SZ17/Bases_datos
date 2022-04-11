@@ -36,12 +36,14 @@ public class Clientes_service implements Clientes_repo {
         
         // Intialization for the find_client procedure
         simpleJdbcCall_find_client = new SimpleJdbcCall(jdbcTemplate)
-                .withProcedureName("find_client")
-                .returningResultSet("o_client", BeanPropertyRowMapper.newInstance(Clientes.class));
+            .withCatalogName("clientes_pack")
+            .withProcedureName("find_client")
+            .returningResultSet("o_client", BeanPropertyRowMapper.newInstance(Clientes.class));
 
         // Initialization for the add_client procedure.
         simpleJdbcCall_add_client = new SimpleJdbcCall(jdbcTemplate)
-                .withProcedureName("addClient");
+            .withCatalogName("clientes_pack")
+            .withProcedureName("clientes_pack.add_client");
         
     }
 
@@ -88,12 +90,11 @@ public class Clientes_service implements Clientes_repo {
 
         System.out.println(result);
         
-        // if (result == null) {
-        //     log.warn("An error occured while adding a new Client ...");
-        //     return Collections.emptyList();
-        // } else {
-        //     return (List) result.get("o_client");
-        // }
+        if (result == null) {
+            log.warn("An error occured while adding a new Client ...");
+        } else {
+            System.out.println(result);
+        }
         
     }
     

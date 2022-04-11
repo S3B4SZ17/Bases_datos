@@ -73,19 +73,61 @@ CREATE sequence CLIENTES_IDCLIENTE_SEQ
   NOCYCLE
   CACHE 20;
 
-CREATE sequence MATRICULA_IDMATRICULA_SEQ;
+CREATE sequence MATRICULA_IDMATRICULA_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
-CREATE sequence SUSCRIPCIONES_IDSUSCRIPCION_SEQ;
+CREATE sequence SUSCRIPCIONES_IDSUSCRIPCION_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
-CREATE sequence NUTRICION_IDNUTRICION_SEQ;
+CREATE sequence NUTRICION_IDNUTRICION_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
-CREATE sequence STAFF_IDSTAFF_SEQ;
+CREATE sequence STAFF_IDSTAFF_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
-CREATE sequence HORARIOS_IDHORARIO_SEQ;
+CREATE sequence HORARIOS_IDHORARIO_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
-CREATE sequence CUENTAS_IBAN_IDCUENTA_SEQ;
+CREATE sequence CUENTAS_IBAN_IDCUENTA_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
-CREATE sequence SALARIOS_IDSALARIO_SEQ;
+CREATE sequence SALARIOS_IDSALARIO_SEQ
+  MINVALUE 1
+  START WITH 1
+  INCREMENT BY 1
+  NOORDER  
+  NOCYCLE
+  CACHE 20;
 
 CREATE OR REPLACE trigger BI_CLIENTES_IDCLIENTE
 before insert on Clientes
@@ -146,38 +188,51 @@ end;
 
 --- Remember to place a '/' after the triggers to terminate them!!!!!
 -- Stored PROCEDURES
--- Procedure find_client that will search for a client based on the email address
--- Take into account that we should have the name of the in variable different than any column name
-create or replace procedure find_client(v_correo in Clientes.Correo%type, o_client out SYS_REFCURSOR)
-as
---variables
-BEGIN
-	OPEN o_client FOR
-    SELECT * FROM Clientes WHERE CORREO = v_correo;
-    -- dbms_output.put_line(resultado.NOMBRE||' '||resultado.APELLIDO||' lleva '||resultado.MESES_ACTIVOS||' meses activo.');
-EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
-    dbms_output.put_line( 'No se encontraron datos con el correo '||v_correo);
-END;
+--- Package definition --------------------------------
+
+
+CREATE OR REPLACE PACKAGE clientes_pack AS
+	procedure find_client(v_correo in Clientes.Correo%type, o_client out SYS_REFCURSOR);
+	procedure add_client(
+		v_nombre in Clientes.Nombre%type, 
+		v_apellido in Clientes.APELLIDO%type, 
+		v_meses_activos in Clientes.MESES_ACTIVOS%type,
+		v_correo in Clientes.CORREO%type);
+END clientes_pack;
+/
+
+CREATE OR REPLACE PACKAGE BODY clientes_pack AS
+	-- Procedure find_client that will search for a client based on the email address
+	-- Take into account that we should have the name of the in variable different than any column name
+	procedure find_client(v_correo in Clientes.Correo%type, o_client out SYS_REFCURSOR)
+	is
+	--variables
+	BEGIN
+		OPEN o_client FOR
+		SELECT * FROM Clientes WHERE CORREO = v_correo;
+		-- dbms_output.put_line(resultado.NOMBRE||' '||resultado.APELLIDO||' lleva '||resultado.MESES_ACTIVOS||' meses activo.');
+	EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
+		dbms_output.put_line( 'No se encontraron datos con el correo '||v_correo);
+	END;
+
+	-- Procedure add_client ----------------------------------------------------
+	procedure add_client(
+		v_nombre in Clientes.Nombre%type, 
+		v_apellido in Clientes.APELLIDO%type, 
+		v_meses_activos in Clientes.MESES_ACTIVOS%type,
+		v_correo in Clientes.CORREO%type)
+	is
+	--variables
+	BEGIN
+		INSERT INTO Clientes (Nombre, Apellido, Meses_Activos, Correo)  VALUES (v_nombre, v_apellido, v_meses_activos, v_correo);
+		COMMIT;
+	END;
+END clientes_pack; 
+/
 
 begin
-    find_client('sebas@example.com1');
+	clientes_pack.find_client('sebas@example.com1');
 end;
-/
-
--- Procedure add_client ----------------------------------------------------
-create or replace procedure addClient(
-	v_nombre in Clientes.Nombre%type, 
-	v_apellido in Clientes.APELLIDO%type, 
-	v_meses_activos in Clientes.MESES_ACTIVOS%type,
-	v_correo in Clientes.CORREO%type)
-is
---variables
 BEGIN
-	INSERT INTO Clientes (Nombre, Apellido, Meses_Activos, Correo)  VALUES (v_nombre, v_apellido, v_meses_activos, v_correo);
-	COMMIT;
-END;
-/
-
-BEGIN
-   addClient('Jason','Todd', 35,'jason@example.com');
+	clientes_pack.add_client('Jason','Todd', 35,'jason@example.com');
 END;
