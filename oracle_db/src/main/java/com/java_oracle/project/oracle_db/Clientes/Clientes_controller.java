@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,9 +43,12 @@ public class Clientes_controller {
         //with the responseEntity class we are sending a response of OK to the client
     }
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addClient(@RequestBody Clientes client) {
-        clientes_service.addClient(client);
+        int result = clientes_service.addClient(client);
+        if (result != 0) {
+            return ResponseEntity.internalServerError().body("Error while trying to add a client");
+        }
         return new ResponseEntity<>(HttpStatus.OK);
         //with the responseEntity class we are sending a response of OK to the client
     }

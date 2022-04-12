@@ -43,7 +43,7 @@ public class Clientes_service implements Clientes_repo {
         // Initialization for the add_client procedure.
         simpleJdbcCall_add_client = new SimpleJdbcCall(jdbcTemplate)
             .withCatalogName("clientes_pack")
-            .withProcedureName("clientes_pack.add_client");
+            .withProcedureName("add_client");
         
     }
 
@@ -75,7 +75,7 @@ public class Clientes_service implements Clientes_repo {
     }
     
     @Override
-    public void addClient(Clientes client) {
+    public int addClient(Clientes client) {
         log.info("Calling add_client procedure");
 
         System.out.println(client);
@@ -86,14 +86,12 @@ public class Clientes_service implements Clientes_repo {
                 .addValue("v_meses_activos", client.getMeses_activos())
                 .addValue("v_correo", client.getCorreo());
         
-        Map result = simpleJdbcCall_add_client.execute(parameters_in);
-
-        System.out.println(result);
-        
-        if (result == null) {
-            log.warn("An error occured while adding a new Client ...");
-        } else {
-            System.out.println(result);
+        try {
+            simpleJdbcCall_add_client.execute(parameters_in);
+            return 0;
+        } catch (Exception e) {
+            log.error(e.toString());
+            return 1;
         }
         
     }
