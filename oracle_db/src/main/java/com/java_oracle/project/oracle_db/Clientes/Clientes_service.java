@@ -70,15 +70,12 @@ public class Clientes_service implements Clientes_repo {
     public List<Clientes> findAllClientes() {
         List<Clientes> clientesList = jdbcTemplate.query("SELECT * FROM Clientes",
                 BeanPropertyRowMapper.newInstance(Clientes.class));
-        // System.out.println(clientesList);
         return clientesList;
     }
     
     @Override
     public int addClient(Clientes client) {
         log.info("Calling add_client procedure");
-
-        System.out.println(client);
 
         SqlParameterSource parameters_in = new MapSqlParameterSource()
                 .addValue("v_nombre", client.getNombre())

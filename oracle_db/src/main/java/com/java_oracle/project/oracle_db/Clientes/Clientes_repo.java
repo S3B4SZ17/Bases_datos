@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface Clientes_repo {
 
-    List<Clientes> findClientByEmail(String nombre);
+    List<Clientes> findClientByEmail(String email);
 
     int addClient(Clientes client);
 
