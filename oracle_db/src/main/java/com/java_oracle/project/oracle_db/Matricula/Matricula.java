@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Matricula {
 
     private int idMatricula;
-    private Clientes Cliente;
-    private Suscripciones Suscripcion;
-    private Nutricion Nutricion;
+    private Clientes cliente;
+    private Suscripciones suscripcion;
+    private Nutricion nutricion;
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class Nutricion {
 
     private int idNutricion;
-    private String Nombre;
-    private String Descripcion;
-    private Staff Nutricionista;
+    private String nombre;
+    private String descripcion;
+    private Staff nutricionista;
 }

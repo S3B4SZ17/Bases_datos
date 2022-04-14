@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Horarios {
 
     private int idHorario;
-    private String Nombre;
-    private String Description;
-    private Staff Entrenador;
+    private String nombre;
+    private String description;
+    private Staff entrenador;
 }

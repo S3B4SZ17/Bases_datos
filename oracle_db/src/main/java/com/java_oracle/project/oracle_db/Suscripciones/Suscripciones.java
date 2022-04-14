@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class Suscripciones {
 
     private int idSuscripcion;
-    private String Nombre;
-    private String Description;
-    private Staff Entrenador;
-    private Horarios Horario;
-    private Double Precio;
+    private String nombre;
+    private String description;
+    private Staff entrenador;
+    private Horarios horario;
+    private Double precio;
 }
