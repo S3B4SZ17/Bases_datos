@@ -199,20 +199,17 @@ END staff_pack;
 /
 
 CREATE OR REPLACE PACKAGE BODY staff_pack AS
-    -- Procedure find_client that will search for a client based on the email address
-    -- Take into account that we should have the name of the in variable different than any column name
+
     procedure find_staff(v_correo in Staff.Correo%type, o_staff out SYS_REFCURSOR)
         is
         --variables
     BEGIN
         OPEN o_staff FOR
             SELECT * FROM Staff WHERE CORREO = v_correo;
-        -- dbms_output.put_line(resultado.NOMBRE||' '||resultado.APELLIDO||' lleva '||resultado.MESES_ACTIVOS||' meses activo.');
     EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
         dbms_output.put_line( 'No se encontraron datos con el correo '||v_correo);
     END;
 
-    -- Procedure add_client ----------------------------------------------------
     procedure add_staff(
         v_nombre in Staff.Nombre%type,
         v_apellido in Staff.Apellido%type,
@@ -226,6 +223,113 @@ CREATE OR REPLACE PACKAGE BODY staff_pack AS
     END;
 END staff_pack;
 /
+
+CREATE OR REPLACE PACKAGE nutricion_pack AS
+    procedure find_nutricionista(v_nombre in Nutricion.Nombre%type, o_nutricion out SYS_REFCURSOR);
+    procedure add_nutricionista(
+        v_nombre in Nutricion.Nombre%type,
+        v_descripcioin in Nutricion.Descripcion%type,
+        v_nutricionista in Nutricion.Nutricionista%type);
+END nutricion_pack;
+/
+
+CREATE OR REPLACE PACKAGE BODY nutricion_pack AS
+
+    procedure find_nutricionista(v_nombre in Nutricion.Nombre%type, o_nutricion out SYS_REFCURSOR)
+        is
+        --variables
+    BEGIN
+        OPEN o_nutricion FOR
+            SELECT * FROM Nutricion WHERE Nombre LIKE '%'||v_nombre||'%';
+    EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
+        dbms_output.put_line( 'No se encontraron datos con el nombre '||v_nombre);
+    END;
+
+    procedure add_nutricionista(
+        v_nombre in Nutricion.Nombre%type,
+        v_descripcioin in Nutricion.Descripcion%type,
+        v_nutricionista in Nutricion.Nutricionista%type)
+        is
+        --variables
+    BEGIN
+        INSERT INTO Nutricion (Nombre, Descripcion, Nutricionista)  VALUES (v_nombre, v_descripcioin, v_nutricionista);
+        COMMIT;
+    END;
+END nutricion_pack;
+/
+
+CREATE OR REPLACE PACKAGE Matricula_pack AS
+    procedure find_Matricula(v_cliente in Matricula.Cliente%type, o_matricula out SYS_REFCURSOR);
+    procedure add_Matricula(
+        v_cliente in Matricula.Cliente%type,
+        v_suscripcion in Matricula.Suscripcion%type,
+        v_nutricionista in Matricula.Nutricion%type);
+END Matricula_pack;
+/
+
+CREATE OR REPLACE PACKAGE BODY Matricula_pack AS
+
+    procedure find_Matricula(v_cliente in Matricula.Cliente%type, o_matricula out SYS_REFCURSOR)
+        is
+        --variables
+    BEGIN
+        OPEN o_matricula FOR
+            SELECT * FROM Matricula WHERE Cliente = v_cliente;
+    EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
+        dbms_output.put_line( 'No se encontraron datos con el cliente '||v_cliente);
+    END;
+
+    procedure add_Matricula(
+        v_cliente in Matricula.Cliente%type,
+        v_suscripcion in Matricula.Suscripcion%type,
+        v_nutricionista in Matricula.Nutricion%type)
+        is
+        --variables
+    BEGIN
+        INSERT INTO Matricula (Cliente, Suscripcion, Nutricion)  VALUES (v_cliente, v_suscripcion, v_nutricionista);
+        COMMIT;
+    END;
+END Matricula_pack;
+/
+
+CREATE OR REPLACE PACKAGE Suscripcion_pack AS
+    procedure find_Suscripcion(v_nombre in Suscripciones.Nombre%type, o_suscripcion out SYS_REFCURSOR);
+    procedure add_Suscripcion(
+        v_nombre in Suscripciones.Nombre%type,
+        v_descripcion in Suscripciones.Descripcion%type,
+        v_entrenador in Suscripciones.Entrenador%type,
+        v_horario in Suscripciones.Horario%type,
+        v_precio in Suscripciones.Precio%type);
+END Suscripcion_pack;
+/
+
+CREATE OR REPLACE PACKAGE BODY Suscripcion_pack AS
+
+    procedure find_Suscripcion(v_nombre in Suscripciones.Nombre%type, o_suscripcion out SYS_REFCURSOR)
+        is
+        --variables
+    BEGIN
+        OPEN o_suscripcion FOR
+            SELECT * FROM Suscripciones WHERE Nombre LIKE '%'||v_nombre||'%';
+    EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
+        dbms_output.put_line( 'No se encontraron datos con el nombre '||v_nombre);
+    END;
+
+    procedure add_Suscripcion(
+        v_nombre in Suscripciones.Nombre%type,
+        v_descripcion in Suscripciones.Descripcion%type,
+        v_entrenador in Suscripciones.Entrenador%type,
+        v_horario in Suscripciones.Horario%type,
+        v_precio in Suscripciones.Precio%type)
+        is
+        --variables
+    BEGIN
+        INSERT INTO Suscripciones (Nombre, Descripcion, Entrenador, Horario, Precio)  VALUES (v_nombre, v_descripcion, v_entrenador, v_horario, v_precio);
+        COMMIT;
+    END;
+END Suscripcion_pack;
+/
+
 begin
 	clientes_pack.find_client('sebas@example.com1');
 end;
