@@ -1,5 +1,7 @@
 package com.java_oracle.project.oracle_db.Horarios;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,21 @@ import lombok.AllArgsConstructor;
 public class Horarios_Controller {
     
     @Autowired
-    private Horarios_Service horarios_service;
+    private Horarios_Service service;
 
     
     @GetMapping(value = "/findHorario", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getClientes(@RequestBody String horario) {
         JsonObject res = new JsonObject();
-        String horario_res = horarios_service.findHorario(horario);
+        String horario_res = service.findHorario(horario);
         res.addProperty("horario", horario_res);
         return new ResponseEntity<>(res.toString(), HttpStatus.OK);
+    }
+
+    @GetMapping("/allHorarios")
+    public ResponseEntity<List<Horarios>> getClientes(){
+        List<Horarios> listHorarios = service.getAllHorarios();
+        return new ResponseEntity<>(listHorarios, HttpStatus.OK);
+        //with the responseEntity class we are sending a response of OK to the client
     }
 }

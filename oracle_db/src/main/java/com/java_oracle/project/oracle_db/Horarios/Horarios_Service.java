@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -36,18 +37,26 @@ public class Horarios_Service implements Horarios_Repo {
 
     @Override
     public String findHorario(String horario) {
-        
-         SqlParameterSource parameters_in = new MapSqlParameterSource()
-                 .addValue("h_nombre", horario);
-         try {
-             log.info(parameters_in.toString());
+
+        SqlParameterSource parameters_in = new MapSqlParameterSource()
+                .addValue("h_nombre", horario);
+        try {
+            log.info(parameters_in.toString());
             String result = simpleJdbcCall_find_horarios.executeFunction(String.class, parameters_in);
             return result;
         } catch (Exception e) {
             log.error(e.toString());
             return "";
         }
-        
+
+    }
+    
+    @Override
+    public List<Horarios> getAllHorarios() {
+        log.info("Getting all Horarios");
+         List<Horarios> horariosList = jdbcTemplate.query("SELECT * FROM Horarios",
+                BeanPropertyRowMapper.newInstance(Horarios.class));
+        return horariosList;
     }
 
 
