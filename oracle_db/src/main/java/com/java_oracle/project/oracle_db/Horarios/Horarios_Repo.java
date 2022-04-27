@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface Horarios_Repo {
 
+    String findHorario(String horario);
+
     List<Horarios> getAllHorarios();
 }
