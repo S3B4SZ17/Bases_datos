@@ -41,7 +41,6 @@ public class Horarios_Service implements Horarios_Repo {
         SqlParameterSource parameters_in = new MapSqlParameterSource()
                 .addValue("h_nombre", horario);
         try {
-            log.info(parameters_in.toString());
             String result = simpleJdbcCall_find_horarios.executeFunction(String.class, parameters_in);
             return result;
         } catch (Exception e) {

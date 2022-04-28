@@ -339,7 +339,7 @@ END;
 create or replace function f_consulta_staff(p_codigo_staff in number)
 return varchar
 as
-    cursor c_staff is select idStaff, Nombre, Apellido from Staff where idStaff = p_codigo_staff;
+    cursor c_staff is select * from Staff where idStaff = p_codigo_staff;
     v_staff Staff%rowtype;
         
 begin
@@ -347,7 +347,7 @@ begin
     fetch c_staff into v_staff;
     while (c_staff%found) loop
         return 'El empleado es ' || v_staff.Nombre || ' ' || v_staff.Apellido || 'y su ID es ' || v_Staff.idStaff;
-        fetch c_staff into v_staff.idStaff, v_staff.Nombre, v_staff.Apellido;
+        fetch c_staff into v_staff;
     end loop;
 end;
 
@@ -379,4 +379,25 @@ declare
 begin
     v_resultado := f_consulta_horarios('Diurno');
     dbms_output.put_line(v_resultado);
+end;
+
+-- Dynamic SQL
+create or replace function get_PlanNutri(p_nombre in varchar2)
+return varchar2
+is
+    nutri varchar2(100);
+begin
+    execute immediate 'select Descripcion from Nutricion where Nombre Like :P' into nutri using p_nombre;
+    return nutri;
+    EXCEPTION WHEN NO_DATA_FOUND THEN  -- catches all 'no data found' errors
+        return 'No hay planes nutrionales con el nombre suministrado = '||p_nombre; 
+end;
+
+drop function get_value;
+
+declare
+    v_resultado varchar2(100);
+begin
+    v_resultado := get_PlanNutri('Proteinico');
+  dbms_output.put_line(v_resultado);
 end;
