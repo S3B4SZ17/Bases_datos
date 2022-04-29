@@ -23,7 +23,7 @@ public class Nutricion_Controller {
     private Nutricion_Service service;
     
     @GetMapping("/search")
-    public ResponseEntity<String> getMatriculasByCient(@RequestBody String nombre) {
+    public ResponseEntity<String> getDescripcionNutri(@RequestBody String nombre) {
         JsonObject res = new JsonObject();
         String nutri_des = service.descripcionPlanNutri(nombre);
         res.addProperty("descripcion", nutri_des);

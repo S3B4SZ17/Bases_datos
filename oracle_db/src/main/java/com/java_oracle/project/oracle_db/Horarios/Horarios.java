@@ -11,6 +11,5 @@ public class Horarios {
 
     private int idHorario;
     private String nombre;
-    private String description;
-    private Staff entrenador;
+    private String descripcion;
 }
