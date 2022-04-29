@@ -27,6 +27,23 @@ class OracleDbApplicationTests {
 		try {
 			process = Runtime.getRuntime().exec(command);
 			log.info(process.getInputStream().toString());
+
+		} catch (IOException e) {
+			log.error(e.toString());
+		}
+
+		assertEquals(0, process.waitFor(), "Command completed successfully.");
+
+	}
+	
+	@Test
+	@DisplayName("Test 2: Get a JSON list of all Clients ...............................")
+	void get_Clientes() throws InterruptedException {
+		String command = "curl --location --request GET localhost:8181/clientes/allClientes";
+		Process process = null;
+		try {
+			process = Runtime.getRuntime().exec(command);
+			log.info(process.getInputStream().toString());
 			
 		} catch (IOException e) {
 			log.error(e.toString());
